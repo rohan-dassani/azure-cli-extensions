@@ -187,6 +187,7 @@ def check_cluster_outbound_connectivity(outbound_connectivity_check_log, filepat
                 outbound_connectivity_check_path = os.path.join(filepath_with_timestamp, consts.Outbound_Network_Connectivity_Check)
                 with open(outbound_connectivity_check_path, 'w+') as outbound:
                     outbound.write("Response code " + outbound_connectivity_response + "\nWe found an issue with Outbound network connectivity from the cluster.")
+            telemetry.set_exception(exception='Outbound network connectivity failed', fault_type=consts.Outbound_Connectivity_Check_Failed, summary="Outbound network connectivity failed in the cluster")
             return consts.Diagnostic_Check_Failed, storage_space_available
 
     # For handling storage or OS exception that may occur during the execution
