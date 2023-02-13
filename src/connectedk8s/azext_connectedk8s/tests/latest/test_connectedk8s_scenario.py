@@ -243,6 +243,9 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
         self.cmd("az network private-endpoint dns-zone-group create -g {rg} --endpoint-name testpe-eastus2euap --name arczonegrp --private-dns-zone privatelink.dp.kubernetesconfiguration.azure.com --zone-name configdp")
         self.cmd("az network private-endpoint dns-zone-group add -g {rg} --endpoint-name testpe-eastus2euap --name arczonegrp --private-dns-zone privatelink.his.arc.azure.com --zone-name hisdp")
 
+        self.cmd('aks create -g {rg} -n {managed_cluster_name} --generate-ssh-keys')
+        self.cmd('aks get-credentials -g {rg} -n {managed_cluster_name} -f {kubeconfig}')
+
         self.cmd("az connectedk8s connect -g {rg} -n {name} -l eastus2euap --tags foo=doo --kube-config {kubeconfig} --kube-context {managed_cluster_name} --enable-private-link true --private-link-scope-resource-id /subscriptions/{sub_id}/resourceGroups/{rg}/providers/Microsoft.HybridCompute/privateLinkScopes/testpls-eastus2euap --yes")
         self.cmd('connectedk8s show -g {rg} -n {name}', checks=[
         self.check('name', '{name}'),
