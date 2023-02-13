@@ -207,7 +207,7 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
             'kubeconfig': kubeconfig,
             # 'kubeconfig': "%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')),
             'managed_cluster_name': managed_cluster_name,
-            'id': sub_id
+            'sub_id': sub_id
         })
         # print(self.cmd("az account show"))
         # output = self.cmd("az account show").get_output_in_json()
