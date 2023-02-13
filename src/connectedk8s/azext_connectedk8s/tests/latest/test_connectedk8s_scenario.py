@@ -236,7 +236,7 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
         # Link DNS Zones to vnet
         # echo "Linking DNS zones to vnet"
         self.cmd("az network private-dns link vnet create -g {rg} --zone-name privatelink.dp.kubernetesconfiguration.azure.com --name configdplink --virtual-network {rg}-vnet --registration-enabled false")
-        self.cmd("az network private-dns link vnet create -g {rg} --zone-name privatelink.his.arc.azure.com --name hisdplink --virtual-network $RESOURCE_GROUP-vnet --registration-enabled false")
+        self.cmd("az network private-dns link vnet create -g {rg} --zone-name privatelink.his.arc.azure.com --name hisdplink --virtual-network {rg}-vnet --registration-enabled false")
 
         # Create private ip records
         # echo "Creating private ip records for dp endpoints"
