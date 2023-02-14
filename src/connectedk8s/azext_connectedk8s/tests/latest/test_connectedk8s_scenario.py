@@ -300,43 +300,43 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
     #     os.remove("%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')))
 
 
-    # @live_only()
-    # @ResourceGroupPreparer(name_prefix='conk8stest', location='eastus2euap', random_name_length=16)
-    # def test_forcedelete(self,resource_group):
+    @live_only()
+    @ResourceGroupPreparer(name_prefix='conk8stest', location='eastus2euap', random_name_length=16)
+    def test_forcedelete(self,resource_group):
 
-    #     managed_cluster_name = self.create_random_name(prefix='test-force-delete', length=24)
-    #     kubeconfig="%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')) 
-    #     self.kwargs.update({
-    #         'rg': resource_group,
-    #         'name': self.create_random_name(prefix='cc-', length=12),
-    #         'kubeconfig': kubeconfig,
-    #         # 'kubeconfig': "%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')),
-    #         'managed_cluster_name': managed_cluster_name
-    #     })
-    #     self.cmd('aks create -g {rg} -n {managed_cluster_name} --generate-ssh-keys')
-    #     self.cmd('aks get-credentials -g {rg} -n {managed_cluster_name} -f {kubeconfig}')
-    #     self.cmd('connectedk8s connect -g {rg} -n {name} -l eastus --tags foo=doo --kube-config {kubeconfig} --kube-context {managed_cluster_name}', checks=[
-    #         self.check('tags.foo', 'doo'),
-    #         self.check('name', '{name}')
-    #     ])
-    #     self.cmd('connectedk8s show -g {rg} -n {name}', checks=[
-    #         self.check('name', '{name}'),
-    #         self.check('resourceGroup', '{rg}'),
-    #         self.check('tags.foo', 'doo')
-    #     ])
+        managed_cluster_name = self.create_random_name(prefix='test-force-delete', length=24)
+        kubeconfig="%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')) 
+        self.kwargs.update({
+            'rg': resource_group,
+            'name': self.create_random_name(prefix='cc-', length=12),
+            'kubeconfig': kubeconfig,
+            # 'kubeconfig': "%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')),
+            'managed_cluster_name': managed_cluster_name
+        })
+        self.cmd('aks create -g {rg} -n {managed_cluster_name} --generate-ssh-keys')
+        self.cmd('aks get-credentials -g {rg} -n {managed_cluster_name} -f {kubeconfig}')
+        self.cmd('connectedk8s connect -g {rg} -n {name} -l eastus --tags foo=doo --kube-config {kubeconfig} --kube-context {managed_cluster_name}', checks=[
+            self.check('tags.foo', 'doo'),
+            self.check('name', '{name}')
+        ])
+        self.cmd('connectedk8s show -g {rg} -n {name}', checks=[
+            self.check('name', '{name}'),
+            self.check('resourceGroup', '{rg}'),
+            self.check('tags.foo', 'doo')
+        ])
 
-    #     # Simulating the condition in which the azure-arc namespace got deleted
-    #     # connectedk8s delete command fails in this case
-    #     kubectl_client_location = install_kubectl_client()
-    #     subprocess.run([kubectl_client_location, "delete", "namespace", "azure-arc","--kube-config", kubeconfig])
+        # Simulating the condition in which the azure-arc namespace got deleted
+        # connectedk8s delete command fails in this case
+        kubectl_client_location = install_kubectl_client()
+        subprocess.run([kubectl_client_location, "delete", "namespace", "azure-arc","--kube-config", kubeconfig])
 
-    #     # Using the force delete command
-    #     # -y to supress the prompts
-    #     self.cmd('connectedk8s delete -g {rg} -n {name} --kube-config {kubeconfig} --kube-context {managed_cluster_name} --force -y')
-    #     self.cmd('aks delete -g {rg} -n {managed_cluster_name} -y')
+        # Using the force delete command
+        # -y to supress the prompts
+        self.cmd('connectedk8s delete -g {rg} -n {name} --kube-config {kubeconfig} --kube-context {managed_cluster_name} --force -y')
+        self.cmd('aks delete -g {rg} -n {managed_cluster_name} -y')
 
-    #     # delete the kube config
-    #     os.remove("%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')))
+        # delete the kube config
+        os.remove("%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')))
 
 
     # @live_only()
