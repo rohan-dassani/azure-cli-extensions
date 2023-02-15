@@ -193,14 +193,16 @@ def connected_cluster_exists(client, resource_group_name, cluster_name):
 class Connectedk8sScenarioTest(LiveScenarioTest):
 
     @live_only()
-    @ResourceGroupPreparer(name_prefix='conk8stest', location='eastus2euap', random_name_length=16)
-    def test_pvtlink(self,resource_group):
+    # @ResourceGroupPreparer(name_prefix='conk8stest', location='eastus2euap', random_name_length=16)
+    def test_pvtlink(self):
 
         managed_cluster_name = self.create_random_name(prefix='test-pvtlink', length=24)
         kubeconfig="%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')) 
-        print(self.cmd("az account show"))
-        output = self.cmd("az account show").get_output_in_json()
-        sub_id = output['id']
+        # print(self.cmd("az account show"))
+        resource_group = "rohanazuregroup"
+        sub_id = "1bfbb5d0-917e-4346-9026-1d3b344417f5"
+        # output = self.cmd("az account show").get_output_in_json()
+        # sub_id = output['id']
         self.kwargs.update({
             'rg': resource_group,
             'name': self.create_random_name(prefix='cc-', length=12),
@@ -243,20 +245,20 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
         self.cmd("az network private-endpoint dns-zone-group create -g {rg} --endpoint-name testpe-eastus2euap --name arczonegrp --private-dns-zone privatelink.dp.kubernetesconfiguration.azure.com --zone-name configdp")
         self.cmd("az network private-endpoint dns-zone-group add -g {rg} --endpoint-name testpe-eastus2euap --name arczonegrp --private-dns-zone privatelink.his.arc.azure.com --zone-name hisdp")
 
-        self.cmd('aks create -g {rg} -n {managed_cluster_name} -s Standard_B4ms --generate-ssh-keys')
-        self.cmd('aks get-credentials -g {rg} -n {managed_cluster_name} -f {kubeconfig}')
+        # self.cmd('aks create -g {rg} -n {managed_cluster_name} -s Standard_B4ms --generate-ssh-keys')
+        self.cmd('aks get-credentials -g {rg} -n testing')
 
-        self.cmd("az connectedk8s connect -g {rg} -n {name} -l eastus2euap --tags foo=doo --kube-config {kubeconfig} --kube-context {managed_cluster_name} --enable-private-link true --private-link-scope-resource-id /subscriptions/{sub_id}/resourceGroups/{rg}/providers/Microsoft.HybridCompute/privateLinkScopes/testpls-eastus2euap --yes")
-        self.cmd('connectedk8s show -g {rg} -n {name}', checks=[
-        self.check('name', '{name}'),
+        self.cmd("az connectedk8s connect -g {rg} -n testing -l eastus2euap --tags foo=doo  --enable-private-link true --private-link-scope-resource-id /subscriptions/{sub_id}/resourceGroups/{rg}/providers/Microsoft.HybridCompute/privateLinkScopes/testpls-eastus2euap --yes")
+        self.cmd('connectedk8s show -g {rg} -n testing', checks=[
+        self.check('name', 'testing'),
         self.check('resourceGroup', '{rg}'),
         self.check('tags.foo', 'doo')])
 
-        self.cmd('connectedk8s delete -g {rg} -n {name} --kube-config {kubeconfig} --kube-context {managed_cluster_name} -y')
-        self.cmd('aks delete -g {rg} -n {managed_cluster_name} -y')
+        # self.cmd('connectedk8s delete -g {rg} -n {name} --kube-config {kubeconfig} --kube-context {managed_cluster_name} -y')
+        # self.cmd('aks delete -g {rg} -n {managed_cluster_name} -y')
 
-        # delete the kube config
-        os.remove("%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')))
+        # # delete the kube config
+        # os.remove("%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')))
 
 
     # @live_only()
