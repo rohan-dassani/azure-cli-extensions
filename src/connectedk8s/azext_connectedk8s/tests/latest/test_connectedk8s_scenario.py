@@ -137,7 +137,7 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
         managed_cluster_name = self.create_random_name(prefix='test-connect', length=24)
         kubeconfig="%s" % (_get_test_data_file(managed_cluster_name + '-config.yaml')) 
         output = self.cmd("az account show").get_output_in_json()
-        sub_id = output.id
+        sub_id = output['id']
         self.kwargs.update({
             'rg': resource_group,
             'name': self.create_random_name(prefix='cc-', length=12),
