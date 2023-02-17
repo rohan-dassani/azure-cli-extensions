@@ -154,7 +154,7 @@ class Connectedk8sScenarioTest(LiveScenarioTest):
             self.check('name', '{name}')
         ])
         
-        self.cmd('az rest --method delete --uri "https://management.azure.com/subscriptions/{sub_id}/resourceGroups/{rg}}/providers/Microsoft.Kubernetes/connectedClusters/{managed_cluster_name}?api-version=2022-10-01-preview"')
+        self.cmd('az rest --method delete --uri "https://management.azure.com/subscriptions/{sub_id}/resourceGroups/{rg}/providers/Microsoft.Kubernetes/connectedClusters/{managed_cluster_name}?api-version=2022-10-01-preview"')
         with self.assertRaisesRegexp(ResourceNotFoundError, 'ResourceNotFound'):
             self.cmd('connectedk8s show -g {rg} -n {name}')
         
